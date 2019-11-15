@@ -1,17 +1,22 @@
 #include "mbed.h"
-#include "USB.h"
+#include "USBDDWS1.h"
  
  // Config
 DigitalOut led(LED1);
 InterruptIn button(USER_BUTTON);
 
-void buttonFall(){
+void buttonRise(void){
+    led = true;
+}
+
+void buttonFall(void){
+    led = false;
 }
  
 int main()
 {
     // Init
-    led = true
+    button.rise(callback(buttonRise));
     button.fall(callback(buttonFall));
     
     // while
