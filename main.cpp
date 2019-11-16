@@ -4,6 +4,7 @@
  // Config
 DigitalOut led(LED1);
 InterruptIn button(USER_BUTTON);
+USBDDWS1 ddw();
 
 void buttonRise(void){
     led = true;
