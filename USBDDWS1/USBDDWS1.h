@@ -2,7 +2,6 @@
 #define USBDDWS1_H
 
 #include "USBHID.h"
-#include "PlatformMutex.h"
 
 class USBDDWS1: public USBHID
 {
@@ -11,14 +10,16 @@ public:
     USBDDWS1(USBPhy *phy, uint16_t vendor_id, uint16_t product_id, uint16_t product_release);
     virtual ~USBDDWS1();
 
-    virtual const uint8_t *report_desc();
+    bool steering(int16_t t);
 
 protected:
-    virtual const uint8_t *configuration_desc(uint8_t index);
+    virtual const uint8_t *report_desc();
+    bool update();
 
 private:
-    uint8_t _configuration_descriptor[41];
-    PlatformMutex _mutex;
+    int8_t _steering;
+
+    void _init();
 };
 
 #endif

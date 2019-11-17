@@ -6,6 +6,8 @@ DigitalOut led(LED1);
 InterruptIn button(USER_BUTTON);
 USBDDWS1 ddw;
 
+int16_t x;
+
 void buttonRise(void)
 {
     led = true;
@@ -24,5 +26,6 @@ int main()
 
     // while
     while (1) {
+        ddw.steering(x);
     }
 }
