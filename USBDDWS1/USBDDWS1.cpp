@@ -36,22 +36,26 @@ bool USBDDWS1::update()
     report.data[0] = _steering & 0xffff;
     report.data[1] = (_steering & 0xffff)>>8;
     report.data[2] = _accelerator & 0xff;
-    report.length = 3;
+    report.data[3] = _brake & 0xff;
+    report.length = 4;
 
     bool ret = send(&report);
     return ret;
 }
 
-bool USBDDWS1::steering(int16_t s)
+void USBDDWS1::steering(int16_t s)
 {
     _steering = s;
-    return update();
 }
 
-bool USBDDWS1::accelerator(int16_t a)
+void USBDDWS1::accelerator(int16_t a)
 {
     _accelerator = a;
-    return update();
+}
+
+void USBDDWS1::brake(int16_t a)
+{
+    _brake = a;
 }
 
 const uint8_t *USBDDWS1::report_desc()
@@ -71,6 +75,14 @@ const uint8_t *USBDDWS1::report_desc()
 
         USAGE_PAGE(1), 0x02,           // Simulation Controls
         USAGE(1), 0xC4,                // Accelerator
+        LOGICAL_MINIMUM(1), 0x00,      // 0
+        LOGICAL_MAXIMUM(1), 0x7f,      // 127
+        REPORT_SIZE(1), 0x08,
+        REPORT_COUNT(1), 0x01,
+        INPUT(1), 0x02,                // Data, Variable, Absolute
+        
+        USAGE_PAGE(1), 0x02,           // Simulation Controls
+        USAGE(1), 0xC5,                // Brake
         LOGICAL_MINIMUM(1), 0x00,      // 0
         LOGICAL_MAXIMUM(1), 0x7f,      // 127
         REPORT_SIZE(1), 0x08,

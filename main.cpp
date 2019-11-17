@@ -19,16 +19,19 @@ QEI wheel(D14, D15, NC, 4000, QEI::X4_ENCODING);
 // Global Variable
 int16_t steering_USB = 0;
 int16_t accelerator_USB = 0;
+int16_t brake_USB = 0;
 
 void buttonRise(void)
 {
-    accelerator_USB = 100;
+    accelerator_USB = 0;
+    brake_USB = 100;
     led = true;
 }
 
 void buttonFall(void)
 {
-    accelerator_USB = 0;
+    accelerator_USB = 100;
+    brake_USB = 0;
     led = false;
 }
 
@@ -58,5 +61,7 @@ int main()
         steering_USB = read_steering();
         ddw.steering(steering_USB);
         ddw.accelerator(accelerator_USB);
+        ddw.brake(brake_USB);
+        ddw.update();
     }
 }
