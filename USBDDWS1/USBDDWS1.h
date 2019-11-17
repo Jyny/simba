@@ -18,7 +18,7 @@ protected:
     bool update();
 
 private:
-    int8_t _steering;
+    int16_t _steering;
     int8_t _accelerator;
 
     void _init();

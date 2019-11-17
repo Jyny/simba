@@ -2,6 +2,10 @@
 #include "USBDDWS1.h"
 #include "QEI.h"
 
+// wheel angle config
+const int support_max_angle = 1620/2;
+int wheel_max_angle = 900/2;
+
 // Config
 DigitalOut led(LED1);
 
@@ -10,7 +14,7 @@ InterruptIn button(USER_BUTTON);
 USBDDWS1 ddw;
 
 // QEI config
-QEI wheel(D14, D15, NC, 1000, QEI::X4_ENCODING);
+QEI wheel(D14, D15, NC, 4000, QEI::X4_ENCODING);
 
 // Global Variable
 int16_t steering_USB = 0;
@@ -26,19 +30,21 @@ void buttonFall(void)
 {
     accelerator_USB = 0;
     led = false;
-    
 }
 
 int read_steering()
 {
-    int t = wheel.getPulses();
-    if (t > 1270) {
-        return 127;
+    int t = wheel.getPulses()*360/4000;
+    // resolution multiplier
+    t = t*support_max_angle/wheel_max_angle;
+
+    if (t < -support_max_angle) {
+        return -support_max_angle;
     }
-    if (t < -1270) {
-        return -127;
+    if (t > support_max_angle) {
+        return support_max_angle;
     }
-    return t/10;
+    return t;
 }
 
 int main()

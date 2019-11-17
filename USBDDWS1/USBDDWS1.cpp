@@ -33,9 +33,10 @@ bool USBDDWS1::update()
 {
     HID_REPORT report;
 
-    report.data[0] = _steering & 0xff;
-    report.data[1] = _accelerator & 0xff;
-    report.length = 2;
+    report.data[0] = _steering & 0xffff;
+    report.data[1] = (_steering & 0xffff)>>8;
+    report.data[2] = _accelerator & 0xff;
+    report.length = 3;
 
     bool ret = send(&report);
     return ret;
@@ -62,9 +63,9 @@ const uint8_t *USBDDWS1::report_desc()
 
         USAGE_PAGE(1), 0x02,           // Simulation Controls
         USAGE(1), 0xC8,                // Steering
-        LOGICAL_MINIMUM(1), 0x81,      // -127
-        LOGICAL_MAXIMUM(1), 0x7f,      // 127
-        REPORT_SIZE(1), 0x08,
+        LOGICAL_MINIMUM(2), 0xD6, 0xFC,     // -810
+        LOGICAL_MAXIMUM(2), 0x2A, 0x03,     // 810
+        REPORT_SIZE(1), 0x10,
         REPORT_COUNT(1), 0x01,
         INPUT(1), 0x02,                // Data, Variable, Absolute
 
