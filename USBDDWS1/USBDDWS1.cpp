@@ -34,7 +34,8 @@ bool USBDDWS1::update()
     HID_REPORT report;
 
     report.data[0] = _steering & 0xff;
-    report.length = 1;
+    report.data[1] = _accelerator & 0xff;
+    report.length = 2;
 
     bool ret = send(&report);
     return ret;
@@ -46,12 +47,19 @@ bool USBDDWS1::steering(int16_t s)
     return update();
 }
 
+bool USBDDWS1::accelerator(int16_t a)
+{
+    _accelerator = a;
+    return update();
+}
+
 const uint8_t *USBDDWS1::report_desc()
 {
     static const uint8_t report_descriptor[] = {
         USAGE_PAGE(1), 0x01,           // Generic Desktop
         USAGE(1), 0x04,                // Joystick
         COLLECTION(1), 0x01,           // Application
+
         USAGE_PAGE(1), 0x02,           // Simulation Controls
         USAGE(1), 0xC8,                // Steering
         LOGICAL_MINIMUM(1), 0x81,      // -127
@@ -59,6 +67,15 @@ const uint8_t *USBDDWS1::report_desc()
         REPORT_SIZE(1), 0x08,
         REPORT_COUNT(1), 0x01,
         INPUT(1), 0x02,                // Data, Variable, Absolute
+
+        USAGE_PAGE(1), 0x02,           // Simulation Controls
+        USAGE(1), 0xC4,                // Accelerator
+        LOGICAL_MINIMUM(1), 0x00,      // 0
+        LOGICAL_MAXIMUM(1), 0x7f,      // 127
+        REPORT_SIZE(1), 0x08,
+        REPORT_COUNT(1), 0x01,
+        INPUT(1), 0x02,                // Data, Variable, Absolute
+
         END_COLLECTION(0)
     };
     reportLength = sizeof(report_descriptor);

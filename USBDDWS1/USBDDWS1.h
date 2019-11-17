@@ -11,6 +11,7 @@ public:
     virtual ~USBDDWS1();
 
     bool steering(int16_t t);
+    bool accelerator(int16_t t);
 
 protected:
     virtual const uint8_t *report_desc();
@@ -18,6 +19,7 @@ protected:
 
 private:
     int8_t _steering;
+    int8_t _accelerator;
 
     void _init();
 };
