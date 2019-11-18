@@ -9,7 +9,7 @@ public:
     USBDDWS1(bool connect_blocking = true, uint16_t vendor_id = 0x1234, uint16_t product_id = 0x0006, uint16_t product_release = 0x0001);
     USBDDWS1(USBPhy *phy, uint16_t vendor_id, uint16_t product_id, uint16_t product_release);
     virtual ~USBDDWS1();
-    
+
     bool update();
     void steering(int16_t t);
     void accelerator(int16_t t);
@@ -22,6 +22,7 @@ private:
     int16_t _steering;
     int8_t _accelerator;
     int8_t _brake;
+    int8_t _button;
 
     void _init();
 };

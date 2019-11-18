@@ -37,7 +37,8 @@ bool USBDDWS1::update()
     report.data[1] = (_steering & 0xffff)>>8;
     report.data[2] = _accelerator & 0xff;
     report.data[3] = _brake & 0xff;
-    report.length = 4;
+    report.data[4] = _button & 0xff;
+    report.length = 5;
 
     bool ret = send(&report);
     return ret;
@@ -80,7 +81,7 @@ const uint8_t *USBDDWS1::report_desc()
         REPORT_SIZE(1), 0x08,
         REPORT_COUNT(1), 0x01,
         INPUT(1), 0x02,                // Data, Variable, Absolute
-        
+
         USAGE_PAGE(1), 0x02,           // Simulation Controls
         USAGE(1), 0xC5,                // Brake
         LOGICAL_MINIMUM(1), 0x00,      // 0
@@ -88,6 +89,17 @@ const uint8_t *USBDDWS1::report_desc()
         REPORT_SIZE(1), 0x08,
         REPORT_COUNT(1), 0x01,
         INPUT(1), 0x02,                // Data, Variable, Absolute
+
+        USAGE_PAGE(1), 0x09,            // Buttons
+        USAGE_MINIMUM(1), 0x01,         // 1
+        USAGE_MAXIMUM(1), 0x08,         // 8
+        LOGICAL_MINIMUM(1), 0x00,       // 0
+        LOGICAL_MAXIMUM(1), 0x01,       // 1
+        REPORT_SIZE(1), 0x01,
+        REPORT_COUNT(1), 0x08,
+        UNIT_EXPONENT(1), 0x00,         // Unit_Exponent (0)
+        UNIT(1), 0x00,                  // Unit (None)
+        INPUT(1), 0x02,                 // Data, Variable, Absolute
 
         END_COLLECTION(0)
     };

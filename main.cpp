@@ -14,7 +14,7 @@ InterruptIn button(USER_BUTTON);
 USBDDWS1 ddw;
 
 // QEI config
-QEI wheel(D14, D15, NC, 4000, QEI::X4_ENCODING);
+QEI steering(D14, D15, NC, 4000, QEI::X4_ENCODING);
 
 // Global Variable
 int16_t steering_USB = 0;
@@ -37,7 +37,7 @@ void buttonFall(void)
 
 int read_steering()
 {
-    int t = wheel.getPulses()*360/4000;
+    int t = steering.getPulses()*360/4000;
     // resolution multiplier
     t = t*support_max_angle/wheel_max_angle;
 
