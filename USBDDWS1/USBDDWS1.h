@@ -15,6 +15,15 @@ public:
     void accelerator(int16_t t);
     void brake(int16_t t);
 
+    void button1(bool b);
+    void button2(bool b);
+    void button3(bool b);
+    void button4(bool b);
+    void button5(bool b);
+    void button6(bool b);
+    void button7(bool b);
+    void button8(bool b);
+
 protected:
     virtual const uint8_t *report_desc();
 

@@ -1,0 +1,22 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234000600010004]
+"Description" = "DDWS1"
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234000600010004\RacingWheel]
+"MaxWheelAngle" = dword:00000654
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234000600010004\RacingWheel\Wheel]
+"AxisIndex" = dword:00000002
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234000600010004\RacingWheel\Throttle]
+"AxisIndex" = dword:00000001
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234000600010004\RacingWheel\Brake]
+"AxisIndex" = dword:00000000
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234000600010004\RacingWheel\NextGear]
+"ButtonIndex" = dword:00000000
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234000600010004\RacingWheel\PreviousGear]
+"ButtonIndex" = dword:00000001

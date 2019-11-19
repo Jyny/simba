@@ -27,6 +27,9 @@ USBDDWS1::~USBDDWS1()
 void USBDDWS1::_init()
 {
     _steering = 0;
+    _accelerator = 0;
+    _brake = 0;
+    _button = 0x00000000;
 }
 
 bool USBDDWS1::update()
@@ -57,6 +60,78 @@ void USBDDWS1::accelerator(int16_t a)
 void USBDDWS1::brake(int16_t a)
 {
     _brake = a;
+}
+
+void USBDDWS1::button1(bool t)
+{
+    if(t) {
+        _button = _button | 0x01;
+    } else {
+        _button = _button & 0xFE;
+    }
+}
+
+void USBDDWS1::button2(bool t)
+{
+    if(t) {
+        _button = _button | 0x02;
+    } else {
+        _button = _button & 0xFD;
+    }
+}
+
+void USBDDWS1::button3(bool t)
+{
+    if(t) {
+        _button = _button | 0x04;
+    } else {
+        _button = _button & 0xFB;
+    }
+}
+
+void USBDDWS1::button4(bool t)
+{
+    if(t) {
+        _button = _button | 0x08;
+    } else {
+        _button = _button & 0xF7;
+    }
+}
+
+void USBDDWS1::button5(bool t)
+{
+    if(t) {
+        _button = _button | 0x10;
+    } else {
+        _button = _button & 0xEF;
+    }
+}
+
+void USBDDWS1::button6(bool t)
+{
+    if(t) {
+        _button = _button | 0x20;
+    } else {
+        _button = _button & 0xDF;
+    }
+}
+
+void USBDDWS1::button7(bool t)
+{
+    if(t) {
+        _button = _button | 0x40;
+    } else {
+        _button = _button & 0xBF;
+    }
+}
+
+void USBDDWS1::button8(bool t)
+{
+    if(t) {
+        _button = _button | 0x80;
+    } else {
+        _button = _button & 0x7F;
+    }
 }
 
 const uint8_t *USBDDWS1::report_desc()
