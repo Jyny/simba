@@ -1,5 +1,5 @@
 #include "mbed.h"
-#include "USBDDWS1.h"
+#include "DDRW1USB.h"
 #include "QEI.h"
 
 // wheel angle config
@@ -11,33 +11,37 @@ DigitalOut led(LED1);
 
 // USB Config
 InterruptIn button(USER_BUTTON);
-USBDDWS1 ddw;
+DDRW1USB ddrw1usb;
 
 // QEI config
 QEI steering(D14, D15, NC, 4000, QEI::X4_ENCODING);
 
 // Global Variable
 int16_t steering_USB = 0;
-int8_t accelerator_USB = 0;
-int8_t brake_USB = 0;
-int8_t button_USB = 0x00;
+int button_no = 7;
+bool button_press = false;
+int countt = 0;
 
 void buttonRise(void)
 {
-    accelerator_USB = 0;
-    brake_USB = 100;
-    ddw.button1(true);
-    ddw.button2(true);
+    if(countt < 10) {
+        return;
+    }
+    
     led = true;
+    button_press = true;
+    if(button_no>=7) {
+        button_no = 0;
+    } else {
+        button_no++;
+    }
 }
 
 void buttonFall(void)
 {
-    accelerator_USB = 100;
-    brake_USB = 0;
-    ddw.button1(false);
-    ddw.button2(false);
     led = false;
+    button_press = false;
+    countt = 0;
 }
 
 int read_steering()
@@ -59,15 +63,54 @@ int read_steering()
 int main()
 {
     // Init
+    set_time(0);
     button.rise(callback(buttonRise));
     button.fall(callback(buttonFall));
 
     // while
     while (1) {
         steering_USB = read_steering();
-        ddw.steering(steering_USB);
-        ddw.accelerator(accelerator_USB);
-        ddw.brake(brake_USB);
-        ddw.update();
+        ddrw1usb.steering(steering_USB);
+        if(button_press) {
+            switch(button_no) {
+                case 0:
+                    ddrw1usb.button_A(true);
+                    break;
+                case 1:
+                    ddrw1usb.button_DPadUp(true);
+                    break;
+                case 2:
+                    ddrw1usb.button_DPadRight(true);
+                    break;
+                case 3:
+                    ddrw1usb.button_B(true);
+                    break;
+                case 4:
+                    ddrw1usb.button_X(true);
+                    break;
+                case 5:
+                    ddrw1usb.button_Y(true);
+                    break;
+                case 6:
+                    ddrw1usb.button_DPadDown(true);
+                    break;
+                case 7:
+                    ddrw1usb.button_DPadLeft(true);
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            ddrw1usb.button_A(false);
+            ddrw1usb.button_DPadUp(false);
+            ddrw1usb.button_DPadRight(false);
+            ddrw1usb.button_B(false);
+            ddrw1usb.button_Y(false);
+            ddrw1usb.button_X(false);
+            ddrw1usb.button_DPadDown(false);
+            ddrw1usb.button_DPadLeft(false);
+        }
+        ddrw1usb.update();
+        countt++;
     }
 }
