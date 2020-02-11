@@ -2,10 +2,6 @@
 #include "SIMBAUSB.h"
 #include "QEI.h"
 
-// wheel angle config
-const int support_max_angle = 1620/2;
-int wheel_max_angle = 900/2;
-
 // Config
 DigitalOut led(LED1);
 
@@ -14,7 +10,12 @@ InterruptIn button(USER_BUTTON);
 SIMBAUSB simbaUSB;
 
 // QEI config
-QEI steering(D14, D15, NC, 4000, QEI::X4_ENCODING);
+const int PULSE_PER_ROUND = 4000;
+QEI steering(D14, D15, NC, PULSE_PER_ROUND, QEI::X4_ENCODING);
+
+// wheel angle config
+const int SUPPORT_MAX_ANGLE = 1620;
+int setting_max_angle = 900;
 
 // Global Variable
 int16_t steering_USB = 0;
@@ -46,16 +47,13 @@ void buttonFall(void)
 
 int read_steering()
 {
-    int t = steering.getPulses()*360/4000;
+    int t = steering.getPulses();
 
-    // resolution multiplier
-    t = t*support_max_angle/wheel_max_angle;
-
-    if (t < -support_max_angle) {
-        return -support_max_angle;
+    if (t < -setting_max_angle*PULSE_PER_ROUND/720) {
+        return -setting_max_angle*PULSE_PER_ROUND/720;
     }
-    if (t > support_max_angle) {
-        return support_max_angle;
+    if (t > setting_max_angle*PULSE_PER_ROUND/720) {
+        return setting_max_angle*PULSE_PER_ROUND/720;
     }
     return t;
 }
